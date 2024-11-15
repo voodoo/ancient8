@@ -1,0 +1,19 @@
+<%= turbo_stream_from task %>
+
+<tr id="<%= dom_id task %>" class="task">
+  <td>
+    <%= form_with model: [ project, task ], data: { controller: "form" } do |form| %>
+      <%= form.label :completed, class: "checkbox", for: dom_id(task, :completed) do %>
+        <%= form.check_box :completed, class: "checkbox", id: dom_id(task, :completed), data: { action: "form#submit" } %>
+      <% end %>
+    <% end %>
+  </td>
+  <td class="<%= 'task--completed' if task.completed? %>">
+    <%= turbo_frame_tag dom_id(task, :title) do %>
+      <%= link_to task.title, edit_project_task_path(project, task) %>
+    <% end %>
+  </td>
+  <td class="is-right">
+    <%= button_to "Delete", [project, task], class: "button is-danger is-light", method: :delete %>
+  </td>
+</tr>
